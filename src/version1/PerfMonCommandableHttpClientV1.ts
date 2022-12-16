@@ -3,30 +3,30 @@ import { IReferences } from 'pip-services3-commons-nodex';
 import { FilterParams } from 'pip-services3-commons-nodex';
 import { PagingParams } from 'pip-services3-commons-nodex';
 import { DataPage } from 'pip-services3-commons-nodex';
-import { CommandableLambdaClient } from 'pip-services3-aws-nodex';
+import { CommandableHttpClient } from 'pip-services3-rpc-nodex';
 import { CompositeLogger } from 'pip-services3-components-nodex'
 import { CompositeCounters } from 'pip-services3-components-nodex'
 
 import { CounterV1 } from './CounterV1';
 import { IPerfMonClientV1 } from './IPerfMonClientV1';
 
-export class PerfMonLambdaClientV1 extends CommandableLambdaClient implements IPerfMonClientV1 {
+export class PerfMonCommandableHttpClientV1 extends CommandableHttpClient implements IPerfMonClientV1 {
 
     constructor(config?: any) {
-        super('counters');
+        super('v1/perfmon');
 
         if (config != null)
             this.configure(ConfigParams.fromValue(config));
     }
-        
+
     public setReferences(references: IReferences) {
         super.setReferences(references);
         this._logger = new CompositeLogger();
         this._counters = new CompositeCounters();
     }
-
+        
     public async readCounters(correlationId: string, filter: FilterParams, paging: PagingParams): Promise<DataPage<CounterV1>> {
-        let timing = this.instrument(correlationId, 'counters.read_counters');
+        let timing = this.instrument(correlationId, 'perfmon.read_counters');
 
         try {
             return await this.callCommand(
@@ -46,7 +46,7 @@ export class PerfMonLambdaClientV1 extends CommandableLambdaClient implements IP
     }
 
     public async writeCounter(correlationId: string, counter: CounterV1): Promise<CounterV1> {
-        let timing = this.instrument(correlationId, 'counters.write_counter');
+        let timing = this.instrument(correlationId, 'perfmon.write_counter');
 
         try {
             return await this.callCommand(
@@ -65,7 +65,7 @@ export class PerfMonLambdaClientV1 extends CommandableLambdaClient implements IP
     }
 
     public async writeCounters(correlationId: string, counters: CounterV1[]): Promise<void> {
-        let timing = this.instrument(correlationId, 'counters.write_counters');
+        let timing = this.instrument(correlationId, 'perfmon.write_counters');
 
         try {
             return await this.callCommand(
@@ -84,7 +84,7 @@ export class PerfMonLambdaClientV1 extends CommandableLambdaClient implements IP
     }
 
     public async clear(correlationId: string): Promise<void> {
-        let timing = this.instrument(correlationId, 'counters.clear');
+        let timing = this.instrument(correlationId, 'perfmon.clear');
 
         try {
             return await this.callCommand(

@@ -1,7 +1,7 @@
 import { ConfigParams } from 'pip-services3-commons-nodex';
 
 import { PerfMonClientFixtureV1 } from './PerfMonClientFixtureV1';
-import { PerfMonLambdaClientV1 } from '../../src/version1/PerfMonLambdaClientV1';
+import { PerfMonCommandableLambdaClientV1 } from '../../src/version1/PerfMonCommandableLambdaClientV1';
 
 suite('PerfMonLambdaClient', ()=> {
     let AWS_LAMDBA_ARN = process.env["AWS_LAMDBA_ARN"] || "";
@@ -24,11 +24,11 @@ suite('PerfMonLambdaClient', ()=> {
     if (lambdaConfig.getAsNullableString("connection.protocol") != "aws")
         return;
 
-    let client: PerfMonLambdaClientV1;
+    let client: PerfMonCommandableLambdaClientV1;
     let fixture: PerfMonClientFixtureV1;
 
     setup(async () => {
-        client = new PerfMonLambdaClientV1();
+        client = new PerfMonCommandableLambdaClientV1();
         client.configure(lambdaConfig);
 
         fixture = new PerfMonClientFixtureV1(client);

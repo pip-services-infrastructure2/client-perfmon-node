@@ -6,8 +6,9 @@ import { ConsoleLogger } from 'pip-services3-components-nodex';
 import { PerfMonMemoryPersistence } from 'service-perfmon-node';
 import { PerfMonController } from 'service-perfmon-node';
 import { PerfMonHttpServiceV1 } from 'service-perfmon-node';
-import { HttpPerfMon } from '../../src/perfmon/HttpPerfMon';
-import { PerfMonFixture } from './PerfMonFixture';
+import { IPerfMonClientV1 } from '../../src/version1/IPerfMonClientV1';
+import { PerfMonCommandableHttpClientV1 } from '../../src/version1/PerfMonCommandableHttpClientV1';
+import { PerfMonClientFixtureV1 } from './PerfMonClientFixtureV1';
 
 var httpConfig = ConfigParams.fromTuples(
     "connection.protocol", "http",
@@ -15,13 +16,13 @@ var httpConfig = ConfigParams.fromTuples(
     "connection.port", 3000
 );
 
-suite('PerfMonHttpClientV1', ()=> {
+suite('PerfMonCommandableHttpClientV1', ()=> {
     let service: PerfMonHttpServiceV1;
-    let logger: HttpPerfMon;
-    let fixture: PerfMonFixture;
+    let client: PerfMonCommandableHttpClientV1;
+    let fixture: PerfMonClientFixtureV1;
 
     suiteSetup(async () => {
-        let consolePerfMon = new ConsoleLogger();
+        let logger = new ConsoleLogger();
         let persistence = new PerfMonMemoryPersistence();
         let controller = new PerfMonController();
 
@@ -29,30 +30,31 @@ suite('PerfMonHttpClientV1', ()=> {
         service.configure(httpConfig);
 
         let references: References = References.fromTuples(
-            new Descriptor('pip-services', 'logger', 'console', 'default', '1.0'), consolePerfMon,
+            new Descriptor('pip-services', 'logger', 'console', 'default', '1.0'), logger,
             new Descriptor('service-perfmon', 'persistence', 'memory', 'default', '1.0'), persistence,
             new Descriptor('service-perfmon', 'controller', 'default', 'default', '1.0'), controller,
-            new Descriptor('service-perfmon', 'service', 'http', 'default', '1.0'), service
+            new Descriptor('service-perfmon', 'service', 'commandable-http', 'default', '1.0'), service
         );
         controller.setReferences(references);
         service.setReferences(references);
 
-        logger = new HttpPerfMon();
-        logger.configure(httpConfig);
+        client = new PerfMonCommandableHttpClientV1();
+        client.setReferences(references);
+        client.configure(httpConfig);
 
-        fixture = new PerfMonFixture(logger, controller);
+        fixture = new PerfMonClientFixtureV1(client);
 
         await service.open(null);
-        await logger.open(null);
+        await client.open(null);
     });
     
     suiteTeardown(async () => {
-        await logger.close(null);
+        await client.close(null);
         await service.close(null);
     });
 
-    test('Simple perfmon', async () => {
-        await fixture.testSimplePerfMon();
+    test('CRUD Operations', async () => {
+        await fixture.testCrudOperations();
     });
 
 });

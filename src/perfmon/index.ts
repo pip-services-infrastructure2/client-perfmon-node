@@ -1,2 +1,2 @@
 export { DirectPerfMon } from './DirectPerfMon';
-export { HttpPerfMon } from './HttpPerfMon';
+export { CommandableHttpPerfMon } from './CommandableHttpPerfMon';
