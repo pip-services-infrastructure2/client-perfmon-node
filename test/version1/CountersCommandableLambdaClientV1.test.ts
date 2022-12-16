@@ -3,7 +3,7 @@ import { ConfigParams } from 'pip-services3-commons-nodex';
 import { PerfMonClientFixtureV1 } from './PerfMonClientFixtureV1';
 import { PerfMonCommandableLambdaClientV1 } from '../../src/version1/PerfMonCommandableLambdaClientV1';
 
-suite('PerfMonLambdaClient', ()=> {
+suite('PerfMonCommandableLambdaClient', ()=> {
     let AWS_LAMDBA_ARN = process.env["AWS_LAMDBA_ARN"] || "";
     let AWS_ACCESS_ID = process.env["AWS_ACCESS_ID"] || "";
     let AWS_ACCESS_KEY = process.env["AWS_ACCESS_KEY"] || "";

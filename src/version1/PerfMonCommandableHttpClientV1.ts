@@ -26,77 +26,41 @@ export class PerfMonCommandableHttpClientV1 extends CommandableHttpClient implem
     }
         
     public async readCounters(correlationId: string, filter: FilterParams, paging: PagingParams): Promise<DataPage<CounterV1>> {
-        let timing = this.instrument(correlationId, 'perfmon.read_counters');
-
-        try {
-            return await this.callCommand(
-                'read_counters',
-                correlationId,
-                {
-                    filter: filter,
-                    paging: paging
-                }
-            );
-        } catch (err) {
-            timing.endFailure(err);
-            throw err;
-        } finally {
-            timing.endTiming();
-        }
+        return await this.callCommand(
+            'read_counters',
+            correlationId,
+            {
+                filter: filter,
+                paging: paging
+            }
+        );
     }
 
     public async writeCounter(correlationId: string, counter: CounterV1): Promise<CounterV1> {
-        let timing = this.instrument(correlationId, 'perfmon.write_counter');
-
-        try {
-            return await this.callCommand(
-                'write_counter',
-                correlationId,
-                {
-                    counter: counter
-                }
-            );
-        } catch (err) {
-            timing.endFailure(err);
-            throw err;
-        } finally {
-            timing.endTiming();
-        }
+        return await this.callCommand(
+            'write_counter',
+            correlationId,
+            {
+                counter: counter
+            }
+        );
     }
 
     public async writeCounters(correlationId: string, counters: CounterV1[]): Promise<void> {
-        let timing = this.instrument(correlationId, 'perfmon.write_counters');
-
-        try {
-            return await this.callCommand(
-                'write_counters',
-                correlationId,
-                {
-                    counters: counters
-                }
-            );
-        } catch (err) {
-            timing.endFailure(err);
-            throw err;
-        } finally {
-            timing.endTiming();
-        }
+        return await this.callCommand(
+            'write_counters',
+            correlationId,
+            {
+                counters: counters
+            }
+        );
     }
 
     public async clear(correlationId: string): Promise<void> {
-        let timing = this.instrument(correlationId, 'perfmon.clear');
-
-        try {
-            return await this.callCommand(
-                'clear',
-                correlationId,
-                null
-            );
-        } catch (err) {
-            timing.endFailure(err);
-            throw err;
-        } finally {
-            timing.endTiming();
-        }
+        return await this.callCommand(
+            'clear',
+            correlationId,
+            null
+        );
     }
 }

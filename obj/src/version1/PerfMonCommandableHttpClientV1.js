@@ -27,69 +27,29 @@ class PerfMonCommandableHttpClientV1 extends pip_services3_rpc_nodex_1.Commandab
     }
     readCounters(correlationId, filter, paging) {
         return __awaiter(this, void 0, void 0, function* () {
-            let timing = this.instrument(correlationId, 'perfmon.read_counters');
-            try {
-                return yield this.callCommand('read_counters', correlationId, {
-                    filter: filter,
-                    paging: paging
-                });
-            }
-            catch (err) {
-                timing.endFailure(err);
-                throw err;
-            }
-            finally {
-                timing.endTiming();
-            }
+            return yield this.callCommand('read_counters', correlationId, {
+                filter: filter,
+                paging: paging
+            });
         });
     }
     writeCounter(correlationId, counter) {
         return __awaiter(this, void 0, void 0, function* () {
-            let timing = this.instrument(correlationId, 'perfmon.write_counter');
-            try {
-                return yield this.callCommand('write_counter', correlationId, {
-                    counter: counter
-                });
-            }
-            catch (err) {
-                timing.endFailure(err);
-                throw err;
-            }
-            finally {
-                timing.endTiming();
-            }
+            return yield this.callCommand('write_counter', correlationId, {
+                counter: counter
+            });
         });
     }
     writeCounters(correlationId, counters) {
         return __awaiter(this, void 0, void 0, function* () {
-            let timing = this.instrument(correlationId, 'perfmon.write_counters');
-            try {
-                return yield this.callCommand('write_counters', correlationId, {
-                    counters: counters
-                });
-            }
-            catch (err) {
-                timing.endFailure(err);
-                throw err;
-            }
-            finally {
-                timing.endTiming();
-            }
+            return yield this.callCommand('write_counters', correlationId, {
+                counters: counters
+            });
         });
     }
     clear(correlationId) {
         return __awaiter(this, void 0, void 0, function* () {
-            let timing = this.instrument(correlationId, 'perfmon.clear');
-            try {
-                return yield this.callCommand('clear', correlationId, null);
-            }
-            catch (err) {
-                timing.endFailure(err);
-                throw err;
-            }
-            finally {
-                timing.endTiming();
-            }
+            return yield this.callCommand('clear', correlationId, null);
         });
     }
 }

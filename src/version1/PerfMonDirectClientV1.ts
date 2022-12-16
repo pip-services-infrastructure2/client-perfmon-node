@@ -27,12 +27,12 @@ export class PerfMonDirectClientV1 extends DirectClient<any> implements IPerfMon
         let timing = this.instrument(correlationId, 'counters.read_counters');
         
         try {
-            return await this._controller.readCounters(correlationId, filter, paging);
+            let res = await this._controller.readCounters(correlationId, filter, paging);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -40,12 +40,12 @@ export class PerfMonDirectClientV1 extends DirectClient<any> implements IPerfMon
         let timing = this.instrument(correlationId, 'counters.write_counter');
         
         try {
-            return await this._controller.writeCounter(correlationId, counter);
+            let res = await this._controller.writeCounter(correlationId, counter);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -53,12 +53,12 @@ export class PerfMonDirectClientV1 extends DirectClient<any> implements IPerfMon
         let timing = this.instrument(correlationId, 'counters.write_counters');
         
         try {
-            return await this._controller.writeCounters(correlationId, counters);
+            let res = await this._controller.writeCounters(correlationId, counters);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
@@ -66,12 +66,12 @@ export class PerfMonDirectClientV1 extends DirectClient<any> implements IPerfMon
         let timing = this.instrument(correlationId, 'counters.clear');
         
         try {
-            return await this._controller.clear(correlationId);
+            let res = await this._controller.clear(correlationId);
+            timing.endTiming();
+            return res;
         } catch (err) {
             timing.endFailure(err);
             throw err;
-        } finally {
-            timing.endTiming();
         }
     }
 
